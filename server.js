@@ -52,16 +52,6 @@ const ADMIN_USERS = {
 	'd2VibWFzdGVyOmRhbGxhcw==' : 'webmaster'
 }
 
-
-// TODO: remove
-const token = generateSessionToken('justatest');
-debugLog(token);
-const decoded = checkAndExtractToken(decodeURIComponent(token));
-debugLog(decoded);
-
-debugLog('rocket' in USERS);
-debugLog('xrocket' in USERS);
-
 function successResponse(path, res) {
 	var respText = "<h1>Simple Fuzzing Demo</h1>";
 	respText += "<p>You found the main page it seems.</p><br>";
@@ -78,7 +68,7 @@ function teapotResponse(path, res) {
 /* intentional RXSS */
 function errorResponse(req, res) {
   getParams = querystring.parse(url.parse(req.url).query);
-  if (! 'msg' in getParams) {
+  if (! ('msg' in getParams)) {
     res.statusCode = 302;
     res.appendHeader('Location', '/error?msg=Generic+Error');
     return res.end('');
