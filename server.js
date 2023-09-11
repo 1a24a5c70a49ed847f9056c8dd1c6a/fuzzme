@@ -67,14 +67,19 @@ function teapotResponse(path, res) {
 
 /* intentional RXSS */
 function errorResponse(req, res) {
-  getParams = querystring.parse(url.parse(req.url).query);
-  if (! ('msg' in getParams)) {
-    res.statusCode = 302;
-    res.appendHeader('Location', '/error?msg=Generic+Error');
-    return res.end('');
-  }
-  msg = getParams['msg']
-  res.end(`<h1>Error</h1>${msg}`); 
+  	getParams = querystring.parse(url.parse(req.url).query);
+  	if (! ('msg' in getParams)) {
+    	res.statusCode = 302;
+    	res.appendHeader('Location', '/error?msg=Generic+Error');
+    	return res.end('');
+  	}
+ 	msg = getParams['msg']
+ 	res.end(`<h1>Error</h1>${msg}`); 
+}
+
+function defaultResponse(req, res) {
+	res.appendHeader('Content-Type', 'text/html; charset=utf-8');
+  	res.end('<h1>¯\\_(ツ)_/¯</h1>');
 }
 
 function computePasswordHash(passwordString) {
@@ -269,17 +274,16 @@ function handleGenericHost(req, res) {
 	if (path === '/login/success') {
 		return loginSuccessResponse(req, res);
 	}
-  if (path.startsWith('/error')) {
-    return errorResponse(req, res);
-  }
+  	if (path.startsWith('/error')) {
+    	return errorResponse(req, res);
+  	}
 	if (PATHS_200_BASIC.has(path)) {
 		return successResponse(req.url, res);
 	} 
 	if (PATHS_418.has(path)) {
 		return teapotResponse(req.url, res);
 	}
-	
-	res.end('no match');
+	return defaultResponse(req, res);
 }
 
 
