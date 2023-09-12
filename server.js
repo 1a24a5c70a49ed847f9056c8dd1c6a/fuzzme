@@ -79,6 +79,7 @@ function errorResponse(req, res) {
 
 function defaultResponse(req, res) {
 	res.appendHeader('Content-Type', 'text/html; charset=utf-8');
+	res.statusCode = 404;
   	res.end('<h1>¯\\_(ツ)_/¯</h1>');
 }
 
